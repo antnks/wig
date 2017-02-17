@@ -1,6 +1,7 @@
 import concurrent.futures
 import hashlib
 import re
+import ssl
 import string
 import random
 import urllib.request
@@ -217,6 +218,7 @@ class Requester:
 		self.threads = options['threads']
 		self.proxy = options['proxy']
 		self.user_agent = options['user_agent']
+		self.insecure = options['insecure']
 
 		self.data = data
 		self.cache = data['cache']
@@ -242,6 +244,12 @@ class Requester:
 
 		if redirect_handler:
 			args.append(RedirectHandler)
+
+		if self.insecure == True:
+			ctx = ssl.create_default_context()
+			ctx.check_hostname = False
+			ctx.verify_mode = ssl.CERT_NONE
+			args.append(urllib.request.HTTPSHandler(context=ctx))
 		
 		opener = urllib.request.build_opener(*args)
 		opener.addheaders = [('User-agent', self.user_agent)]
