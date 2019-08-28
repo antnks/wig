@@ -69,6 +69,7 @@ class Wig(object):
 			'user_agent': args.user_agent,
 			'proxy': args.proxy,
 			'verbosity': args.verbosity,
+			'insecure': args.insecure,
 			'threads': 10,
 			'batch_size': 20,
 			'run_all': args.run_all,
@@ -326,6 +327,9 @@ def parse_args(url=None):
 
 	parser.add_argument('--verbosity', '-v', action='count', default=0,
 		help='Increase verbosity. Use multiple times for more info')
+
+	parser.add_argument('--insecure', '-i', action='store_true', dest='insecure', default=False,
+		help='Do not verify encrypted connections')
 
 	parser.add_argument('--proxy', dest='proxy', default=None,
 		help='Tunnel through a proxy (format: localhost:8080)')
